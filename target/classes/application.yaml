@@ -1,0 +1,61 @@
+server:
+  port: 8708
+  forward-headers-strategy: framework
+  servlet:
+    context_path: /ticket/api/v1
+  error:
+    include-message: always
+    include-exception: false
+    include-binding-errors: never
+    include-stacktrace: never
+
+spring:
+  application:
+    name: ticket-api-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/booking_db
+    username: root
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+
+feign:
+  client:
+    allotment:
+      name: ALLOCATE-SEAT-API
+      url: http://localhost:8700/allotment/api/v1
+      path: seat
+    discount:
+      name: GLOBAL-OFFER-API
+      url: http://localhost:8700/discount/api/v1
+      path: offer
+    payment:
+      name: PAYMENT-API
+      url: http://localhost:8700/transaction/api/v1
+      path: payment
+    refund:
+      name: REFUND-API
+      url: http://localhost:8700/transaction/api/v1
+      path: refund
+    seat:
+      name: SEAT-API
+      url: http://localhost:8700/setup/api/v1
+      path: seat
+    show:
+      name: SHOW-API
+      url: http://localhost:8700/setup/api/v1
+      path: show
+    viewer:
+      name: VIEWER-API
+      url: http://localhost:8700/user/api/v1
+      path: viewer
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info
